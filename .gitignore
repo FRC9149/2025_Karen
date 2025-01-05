@@ -50,6 +50,7 @@
 
 # Package Files #
 *.jar
+!Bill-Lib.jar
 *.war
 *.nar
 *.ear
