@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.XboxController;
 public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final XboxController m_driverController =
-    new XboxController(OperatorConstants.kDriverControllerPort);
+    new XboxController(0);
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
