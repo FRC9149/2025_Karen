@@ -452,6 +452,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void driveFieldOriented(ChassisSpeeds velocity)
   {
+    velocity.plus(new ChassisSpeeds(0, 0, 0));
     swerveDrive.driveFieldOriented(velocity);
   }
 
