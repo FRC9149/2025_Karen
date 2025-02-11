@@ -4,26 +4,15 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.swervedrive.auto.drivebase.AbsoluteDrive;
-import frc.robot.commands.swervedrive.auto.drivebase.AbsoluteFieldDrive;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.swervedrive.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-import java.io.File;
-import java.util.function.DoubleSupplier;
-import java.util.function.Function;
-
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,26 +22,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final XboxController m_driverController =
-    new XboxController(0);
+  private final XboxController m_driverController = new XboxController(0);
+  private Pose2d m_pose;
 
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final SwerveSubsystem swerveBase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                              "swerve"));
-
+  private final DriveSubsystem swerveBase = new DriveSubsystem();
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
 
     swerveBase.setDefaultCommand(
-      swerveBase.driveCommand(
-        m_driverController::getLeftX,
-        m_driverController::getLeftY,
-        m_driverController::getRightX,
-        m_driverController::getRightY
-      )
+      new RunCommand(() -> swerveBase.drive(
+        m_driverController.getLeftX(),
+        m_driverController.getLeftY(),
+        m_driverController.getRightX(),
+        m_driverController.getRightY()
+      ), swerveBase)
     );
+
   }
  
   /**
@@ -65,14 +52,17 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-      .onTrue(new ExampleCommand(m_exampleSubsystem));
+    // new Trigger(() -> m_driverController.getBButton())
+      // .onTrue(new InstantCommand(swerveBase::zeroGyro));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    new Trigger(() -> m_driverController.getBButton())
-      .onTrue(new InstantCommand(swerveBase::zeroGyro));
+    new Trigger(m_driverController::getBButton).onTrue(new InstantCommand(){
+      @Override
+      public void initialize() {
+        m_pose = swerveBase.getPose();
+      }
+    });
+  
+    new Trigger(m_driverController::getAButton).whileTrue(swerveBase.driveTo(m_pose));
   }
 
   /**
@@ -82,6 +72,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return null;
   }
 }
