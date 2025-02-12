@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robocats.controllers.Ps3;
 import frc.robot.subsystems.swervedrive.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -12,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.XboxController;
  */
 public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final XboxController m_driverController = new XboxController(0);
+  private final Ps3 m_driverController = new Ps3(0);
   private Pose2d m_pose;
 
   private final DriveSubsystem swerveBase = new DriveSubsystem();
@@ -36,7 +36,7 @@ public class RobotContainer {
         m_driverController.getLeftX(),
         m_driverController.getLeftY(),
         m_driverController.getRightX(),
-        m_driverController.getRightY()
+        true
       ), swerveBase)
     );
 
@@ -55,14 +55,14 @@ public class RobotContainer {
     // new Trigger(() -> m_driverController.getBButton())
       // .onTrue(new InstantCommand(swerveBase::zeroGyro));
 
-    new Trigger(m_driverController::getBButton).onTrue(new InstantCommand(){
-      @Override
-      public void initialize() {
-        m_pose = swerveBase.getPose();
-      }
-    });
-  
-    new Trigger(m_driverController::getAButton).whileTrue(swerveBase.driveTo(m_pose));
+    // m_driverController.onB().onTrue(new InstantCommand(){
+      // @Override
+      // public void initialize() {
+        // m_pose = swerveBase.getPose();
+      // }
+    // });
+  // 
+    // m_driverController.onA().whileTrue(swerveBase.driveTo(m_pose));
   }
 
   /**
