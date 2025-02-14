@@ -73,8 +73,33 @@ public class DriveSubsystem extends SubsystemBase {
                     m_frontRight.getPosition(),
                     m_rearLeft.getPosition(),
                     m_rearRight.getPosition()
-            });
+                });
+/*  Don't ask...
 
+
+
+
+                    Silent streams                        silent streams
+                and whispering winds                   and whispering winds
+              shadows dance beneath the moon       shadows dance beneath the moon
+             echoes of the nightingale's song     echoes of the nightingale's song
+              stars align in cosmic harmony        stars align in cosmic harmony
+                   dreams awaken softly                dreams awaken softly
+
+
+
+                   
+                beneath the twilight                          beneath the twilight
+       mysteries unfold in the night's embrace        mysteries unfold in the night's embrace
+              secrets whispered among the trees secrets whispered among the trees
+                    the forest breathes deeply the forest breathes deeply
+                              The visuals were created by humans
+                                    A poem from Chat GPT
+
+
+
+(P.S. He says hello.)
+*/
     /**
      * Creates a new DriveSubsystem.
      */
@@ -156,7 +181,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void drive(double xSpeed, double ySpeed, double xHeading, double yHeading) {
         double headingAngle = Math.atan2(yHeading, xHeading); // in radians
-        headingAngle += (headingAngle < 0) ? (2 * Math.PI) : 0;
+
+        while (headingAngle > 2 * Math.PI) headingAngle -= 2 * Math.PI;
+        while (headingAngle < 0) headingAngle += 2 * Math.PI; // convert from -pi->pi to 0->2pi
 
         drive (
             xSpeed,
