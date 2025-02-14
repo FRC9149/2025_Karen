@@ -75,6 +75,7 @@ public class DriveSubsystem extends SubsystemBase {
                     m_rearRight.getPosition()
                 });
 /*  Don't ask...
+His name is Jeremy...
 
 
 
@@ -89,12 +90,14 @@ public class DriveSubsystem extends SubsystemBase {
 
 
                    
-                beneath the twilight                          beneath the twilight
+              beneath the twilight                          beneath the twilight
        mysteries unfold in the night's embrace        mysteries unfold in the night's embrace
               secrets whispered among the trees secrets whispered among the trees
                     the forest breathes deeply the forest breathes deeply
-                              The visuals were created by humans
-                                    A poem from Chat GPT
+                            ------------------------------------
+                                A poem crafted from Chat GPT
+                                    visuals by humans
+
 
 
 
