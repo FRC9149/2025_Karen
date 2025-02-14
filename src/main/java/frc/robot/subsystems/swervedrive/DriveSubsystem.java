@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
@@ -29,35 +30,35 @@ public class DriveSubsystem extends SubsystemBase {
     private final double k_turnPidMax = m_turnController.calculate(Math.PI, 0);
 
     private final SwerveModule m_frontLeft = new SwerveModule(
+        "fl",
             DriveConstants.kFrontLeftDriveMotorPort,
             DriveConstants.kFrontLeftTurningMotorPort,
             DriveConstants.kFrontLeftEncoderPort,
             DriveConstants.kFrontLeftAbsoluteEncoderOffset,
-            false,
             false);
 
     private final SwerveModule m_rearLeft = new SwerveModule(
+        "bl",
             DriveConstants.kRearLeftDriveMotorPort,
             DriveConstants.kRearLeftTurningMotorPort,
             DriveConstants.kRearLeftEncoderPort,
             DriveConstants.kRearLeftAbsoluteEncoderOffset,
-            false,
-            false);
+            true);
 
     private final SwerveModule m_frontRight = new SwerveModule(
+        "fr",
             DriveConstants.kFrontRightDriveMotorPort,
             DriveConstants.kFrontRightTurningMotorPort,
             DriveConstants.kFrontRightEncoderPort,
             DriveConstants.kFrontRightAbsoluteEncoderOffset,
-            false,
-            false);
+            true);
 
     private final SwerveModule m_rearRight = new SwerveModule(
+        "br",
             DriveConstants.kRearRightDriveMotorPort,
             DriveConstants.kRearRightTurningMotorPort,
             DriveConstants.kRearRightEncoderPort,
             DriveConstants.kRearRightAbsoluteEncoderOffset,
-            false,
             false);
 
     // The gyro sensor
@@ -84,6 +85,12 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // Update the odometry in the periodic block
+        SmartDashboard.putNumber("gyro", m_gyro.getRotation2d().getRadians());
+        m_frontLeft.periodic();
+        m_frontRight.periodic();
+        m_rearLeft.periodic();
+        m_rearRight.periodic();
+        
         m_odometry.update(
                 m_gyro.getRotation2d(),
                 new SwerveModulePosition[] {
@@ -207,6 +214,7 @@ public class DriveSubsystem extends SubsystemBase {
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(
                 desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
+
         m_frontLeft.setDesiredState(desiredStates[0]);
         m_frontRight.setDesiredState(desiredStates[1]);
         m_rearLeft.setDesiredState(desiredStates[2]);

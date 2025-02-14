@@ -70,10 +70,10 @@ public final class Constants
     public static final int kFrontRightEncoderPort = 14;
     public static final int kRearRightEncoderPort = 16;
 
-    public static final double kFrontLeftAbsoluteEncoderOffset = 0.406006;
-    public static final double kRearLeftAbsoluteEncoderOffset = 0.363281;
-    public static final double kFrontRightAbsoluteEncoderOffset = 0.457520;
-    public static final double kRearRightAbsoluteEncoderOffset = 0.206543;
+    public static final double kFrontLeftAbsoluteEncoderOffset = 0.658936;
+    public static final double kRearLeftAbsoluteEncoderOffset = 0.603516;
+    public static final double kFrontRightAbsoluteEncoderOffset = 0.713623;
+    public static final double kRearRightAbsoluteEncoderOffset = 0.458008;
 
     // If you call DriveSubsystem.drive() with a different period make sure to update this.
     public static final double kDrivePeriod = TimedRobot.kDefaultPeriod;
@@ -85,10 +85,10 @@ public final class Constants
 
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
             new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
             new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+            new Translation2d(kWheelBase / 2, kTrackWidth / 2));
 
     public static final boolean kGyroReversed = true;
 
@@ -100,7 +100,7 @@ public final class Constants
     // public static final double kvVoltSecondsPerMeter = 0.8;
     // public static final double kaVoltSecondsSquaredPerMeter = 0.15;
 
-    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxSpeedMetersPerSecond = 1.5;
   }
 
   public static final class ModuleConstants {
