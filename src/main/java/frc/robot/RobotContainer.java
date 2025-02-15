@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robocats.controllers.Ps3;
+import frc.robot.commands.moveElevator;
 import frc.robot.subsystems.swervedrive.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -63,6 +64,8 @@ public class RobotContainer {
     // });
   // 
     // m_driverController.onA().whileTrue(swerveBase.driveTo(m_pose));
+
+    m_driverController.onA().whileTrue(new moveElevator(null, m_driverController));
   }
 
   /**
