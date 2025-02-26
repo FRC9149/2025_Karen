@@ -15,7 +15,9 @@ public class topLevelScore extends SequentialCommandGroup {
         addCommands(
             new ParallelRaceGroup(
                 new moveElevator(elevator, height), 
-                new shootCoral(outake, ShootDirection.CENTER)));
-                new WaitCommand(waitTime);
+                new shootCoral(outake, ShootDirection.CENTER),
+                new WaitCommand(waitTime)
+            )
+        );
     }
 }

@@ -123,7 +123,7 @@ public class RobotContainer {
     m_driverController.onLeftBumper().whileTrue(new moveElevator(elevator, 1));
     m_driverController.onDPadLeft().whileTrue(new shootCoral(outake, ShootDirection.LEFT));
     m_driverController.onDPadRight().whileTrue(new shootCoral(outake, ShootDirection.RIGHT));
-    //m_driverController.onDPadDown().whileTrue(new topLevelScore(elevator, outake, 1, 1));
+    m_driverController.onDPadDown().whileTrue(new topLevelScore(elevator, outake, 0, 2));
   }
 
   /**
