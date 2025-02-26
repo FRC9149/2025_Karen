@@ -11,18 +11,23 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.ctre.phoenix6.hardware.CANcoder;
 
 public class SwerveModule {
   private final String name;
   private final SparkMax m_driveMotor;
   private final SparkMax m_turningMotor;
+  private final SparkMaxConfig config = new SparkMaxConfig();
   
   private final RelativeEncoder m_driveEncoder;
 
@@ -66,7 +71,7 @@ public class SwerveModule {
     return encoderValue * 2 * Math.PI; //convert to radians*/
   }
 
-  private final PIDController m_drivePIDController = new PIDController(ModuleConstants.kPModuleDriveController, 0, 0);
+  private final PIDController m_drivePIDController = new PIDController(0.002, 1.5, 2.0);
 
   // Using a TrapezoidProfile PIDController to allow for smooth turning
   private final ProfiledPIDController m_turningPIDController = new ProfiledPIDController(
@@ -103,6 +108,10 @@ public class SwerveModule {
 
     m_absoluteOffset = encoderOffset;
     m_motorReversed = motorReversed;
+    config.idleMode(IdleMode.kBrake);
+
+    m_driveMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+    m_turningMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
@@ -158,8 +167,13 @@ public class SwerveModule {
     // driving.
     desiredState.cosineScale(encoderRotation);
 
+    double velocity = m_driveEncoder.getVelocity() * 60 * 2 * Math.PI * Math.pow(ModuleConstants.kWheelDiameterMeters/2, 2);
+    //Convert rpm to m/s
+    // * 60 to get into seconds
+    // * 2PI(r^2) for meters
+
     // Calculate the drive output from the drive PID controller.
-    final double driveOutput = m_drivePIDController.calculate(m_driveEncoder.getVelocity(),
+    final double driveOutput = m_drivePIDController.calculate(velocity,
         desiredState.speedMetersPerSecond);
     // m_drivePIDController.calculate(m_driveEncoder.getRate(),
     // desiredState.speedMetersPerSecond);
@@ -170,7 +184,7 @@ public class SwerveModule {
     // desiredState.angle.getRadians());
 
     // Calculate the turning motor output from the turning PID controller.
-    m_driveMotor.set(driveOutput);
+    m_driveMotor.set(desiredState.speedMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond);
     m_turningMotor.set(turnOutput);
   }
 

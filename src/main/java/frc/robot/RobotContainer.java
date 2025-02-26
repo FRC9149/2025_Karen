@@ -4,8 +4,17 @@
 
 package frc.robot;
 
-import frc.robocats.controllers.Ps3;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.robocats.controllers.DDR;
+import com.robocats.controllers.Ps3;
+import com.robocats.controllers.Streetfightercontrol;
+
+import frc.robot.commands.ShootDirection;
 import frc.robot.commands.moveElevator;
+import frc.robot.commands.shootCoral;
+import frc.robot.subsystems.other.Elevator;
+import frc.robot.subsystems.other.Outake;
 import frc.robot.subsystems.swervedrive.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -14,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,24 +32,31 @@ import edu.wpi.first.math.geometry.Pose2d;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // Replace with CommandPS4Controller or CommandJoystick if needed
   private final Ps3 m_driverController = new Ps3(0);
+  private final Streetfightercontrol m_operatorController = new Streetfightercontrol(1);
+  private double elevatorHeightMult = 0;
   private Pose2d m_pose;
 
   private final DriveSubsystem swerveBase = new DriveSubsystem();
+  private final Outake outake = new Outake();
+  private final Elevator elevator = new Elevator(true, 0.2, elevatorHeightMult);
+  // private final Elevator elevator = new Elevator(false, 0.1, elevatorHeightMult);
+  // private final Outake outake = new Outake();
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // NamedCommands.registerCommand("shoot", new shootCoral(outake, ShootDirection.LEFT));
+
     // Configure the trigger bindings
     configureBindings();
 
-    swerveBase.setDefaultCommand(
-      new RunCommand(() -> swerveBase.drive(
-        m_driverController.getLeftX(),
-        m_driverController.getLeftY(),
-        m_driverController.getRightX(),
-        true
-      ), swerveBase)
-    );
+    // swerveBase.setDefaultCommand(
+      // new RunCommand(() -> swerveBase.drive(
+        // m_driverController.getLeftY(),
+        // m_driverController.getLeftX(),
+        // m_driverController.getRightX(),
+        // m_driverController.getRightY()
+      // ), swerveBase)
+    // );
 
   }
  
@@ -65,7 +82,46 @@ public class RobotContainer {
   // 
     // m_driverController.onA().whileTrue(swerveBase.driveTo(m_pose));
 
-    m_driverController.onA().whileTrue(new moveElevator(null, m_driverController));
+    // m_operatorController.onLeftStickIn().whileTrue(new moveElevator(elevator, 0));
+    // m_operatorController.onA().whileTrue(new moveElevator(elevator, 1));
+    // m_operatorController.onX().whileTrue(new moveElevator(elevator, 2));
+    // m_operatorController.onLeftBumper().whileTrue(new moveElevator(elevator, 3));
+
+    // m_driverController.onRightBumper().onTrue(new RunCommand(()->  // When Start is pressed
+    //   swerveBase.setDefaultCommand(                             // set the driving mode
+    //     new RunCommand(()-> swerveBase.drive(                   // to use right x as linear velocity not as a rotation target
+    //       m_driverController.getLeftX(), //* elevatorHeightMult,
+    //       m_driverController.getLeftY(), //* elevatorHeightMult,
+    //       m_driverController.getRightX(), 
+    //       true
+    //     ), swerveBase)
+    //   )
+    // , swerveBase));
+
+    // m_driverController.onLeftBumper().onTrue( new RunCommand(()->
+    //   swerveBase.setDefaultCommand( new RunCommand(()-> swerveBase.drive(
+    //     m_driverController.getLeftX(), //* elevatorHeightMult,
+    //     m_driverController.getLeftY(), //* elevatorHeightMult, 
+    //     m_driverController.getRightX(),
+    //     m_driverController.getRightY()
+    //   ), swerveBase)
+    // ), swerveBase));
+
+    // m_driverController.onRightTrigger(.5).whileTrue(new shootCoral(outake, ShootDirection.CENTER));
+    // m_driverController.onRightBumper()             .whileTrue(new shootCoral(outake, ShootDirection.RIGHT ));
+    m_driverController.onStart().onTrue(new Command(){
+      @Override
+      public void initialize() {
+        // swerveBase.resetGyro();
+        System.out.println("Reset Gyro");
+      }
+    });
+
+    m_driverController.onRightTrigger(.5).whileTrue(new shootCoral(outake, ShootDirection.CENTER));
+    m_driverController.onRightBumper().whileTrue(new moveElevator(elevator, 0));
+    m_driverController.onLeftBumper().whileTrue(new moveElevator(elevator, 1));
+    m_driverController.onDPadLeft().whileTrue(new shootCoral(outake, ShootDirection.LEFT));
+    m_driverController.onDPadRight().whileTrue(new shootCoral(outake, ShootDirection.RIGHT));
   }
 
   /**
@@ -76,5 +132,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return null;
+    // return new PathPlannerAuto("First");
   }
 }

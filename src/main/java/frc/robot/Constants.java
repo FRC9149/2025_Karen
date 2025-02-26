@@ -22,10 +22,10 @@ import swervelib.math.Matter;
 public final class Constants
 {
 
-  public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
-  public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
-  public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED  = Units.feetToMeters(14.5);
+  // public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
+  // public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
+  // public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
+  // public static final double MAX_SPEED  = Units.feetToMeters(14.5);
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
 //  public static final class AutonConstants
@@ -78,9 +78,9 @@ public final class Constants
     // If you call DriveSubsystem.drive() with a different period make sure to update this.
     public static final double kDrivePeriod = TimedRobot.kDefaultPeriod;
 
-    public static final double kTrackWidth = 0.3048;
+    public static final double kTrackWidth = .629;
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = 0.3048;
+    public static final double kWheelBase = 0.629 ;
     // Distance between front and back wheels on robot
 
     public static final SwerveDriveKinematics kDriveKinematics =
@@ -90,17 +90,9 @@ public final class Constants
             new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
             new Translation2d(kWheelBase / 2, kTrackWidth / 2));
 
-    public static final boolean kGyroReversed = true;
+    public static final boolean kGyroReversed = false;
 
-    // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
-    // These characterization values MUST be determined either experimentally or theoretically
-    // for *your* robot's drive.
-    // The SysId tool provides a convenient method for obtaining these values for your robot.
-    // public static final double ksVolts = 1;
-    // public static final double kvVoltSecondsPerMeter = 0.8;
-    // public static final double kaVoltSecondsSquaredPerMeter = 0.15;
-
-    public static final double kMaxSpeedMetersPerSecond = 1.5;
+    public static final double kMaxSpeedMetersPerSecond = 2;
   }
 
   public static final class ModuleConstants {
@@ -111,10 +103,6 @@ public final class Constants
     public static final double kWheelDiameterMeters = 0.1016;
 
     public static final double kPModuleTurningController = 0.5;
-    public static final double kPModuleDriveController = 0.25;
-  }
-
-  public static final class OIConstants {
-    public static final int kDriverControllerPort = 0;
+    public static final double kPModuleDriveController = 0.5;
   }
 }
