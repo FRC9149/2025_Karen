@@ -13,10 +13,12 @@ public class topLevelScore extends SequentialCommandGroup {
 
     public topLevelScore(Elevator elevator, Outake outake, int height, double waitTime) {
         addCommands(
-            new ParallelRaceGroup(
-                new moveElevator(elevator, height), 
-                new shootCoral(outake, ShootDirection.CENTER),
-                new WaitCommand(waitTime)
+            new SequentialCommandGroup(
+                new moveElevator(elevator, height),
+                new ParallelRaceGroup (
+                    new moveElevator(elevator, height+1), 
+                    new shootCoral(outake, ShootDirection.CENTER)
+                )
             )
         );
     }

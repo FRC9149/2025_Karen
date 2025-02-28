@@ -38,7 +38,8 @@ public class Elevator extends SubsystemBase {
     heights.put(0, 0.0);
     heights.put(1, 25.6);
     heights.put(2, 43.0);
-    heights.put(3, 0.0);
+    heights.put(3, 66.75);
+    heights.put(4, 68.0);
   }
   private void initMotors(boolean inverted1, boolean inverted2) {
     m1 = new SparkMax(1, MotorType.kBrushless);
