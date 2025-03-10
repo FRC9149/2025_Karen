@@ -90,7 +90,7 @@ public final class Constants
             new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
             new Translation2d(kWheelBase / 2, kTrackWidth / 2));
 
-    public static final boolean kGyroReversed = false;
+    public static final boolean kGyroReversed = true;
 
     public static final double kMaxSpeedMetersPerSecond = 2;
   }

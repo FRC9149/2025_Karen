@@ -209,10 +209,10 @@ His name is Jeremy...
         // while (headingAngle > 2 * Math.PI) headingAngle -= 2 * Math.PI;
         // while (headingAngle < 0) headingAngle += 2 * Math.PI; // convert from -pi->pi to 0->2pi
         drive (
-            xSpeed,
-            ySpeed,
+            xSpeed / 5,
+            ySpeed / 5,
             xHeading == 0 && yHeading == 0 ? 0 : 
-                m_turnController.calculate(m_gyro.getRotation2d().getRadians(), headingAngle),
+                m_turnController.calculate(m_gyro.getRotation2d().getRadians(), headingAngle)/5,
             true
         );
     }

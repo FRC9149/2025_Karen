@@ -35,12 +35,19 @@ public class Elevator extends SubsystemBase {
     this.elevatorHeightMult = elevatorHeightMult;
   }
   private void initHash() {
-    heights.put(0, 0.0);
+    heights.put(0, 7.31415);
     heights.put(1, 25.6);
     heights.put(2, 43.0);
     heights.put(3, 66.75);
     heights.put(4, 68.0);
   }
+  /**
+   * Initializes the two SparkMax motors used for the elevator, as well as their
+   * corresponding encoders. Also sets up the configuration for the motors.
+   *
+   * @param inverted1 whether the first motor is inverted
+   * @param inverted2 whether the second motor is inverted
+   */
   private void initMotors(boolean inverted1, boolean inverted2) {
     m1 = new SparkMax(1, MotorType.kBrushless);
     m2 = new SparkMax(20, MotorType.kBrushless);

@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.robocats.controllers.DDR;
 import com.robocats.controllers.Ps3;
+import com.robocats.controllers.RevGamePad;
 import com.robocats.controllers.Streetfightercontrol;
 
 import frc.robot.commands.ShootDirection;
@@ -33,7 +34,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final Ps3 m_driverController = new Ps3(0);
+  private final RevGamePad m_driverController = new RevGamePad(0);
   private final Streetfightercontrol m_operatorController = new Streetfightercontrol(1);
   private double elevatorHeightMult = 0;
   private Pose2d m_pose;
@@ -50,14 +51,14 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    // swerveBase.setDefaultCommand(
-      // new RunCommand(() -> swerveBase.drive(
-        // m_driverController.getLeftY(),
-        // m_driverController.getLeftX(),
-        // m_driverController.getRightX(),
-        // m_driverController.getRightY()
-      // ), swerveBase)
-    // );
+    swerveBase.setDefaultCommand(
+      new RunCommand(() -> swerveBase.drive(
+        m_driverController.getLeftY(),
+        m_driverController.getLeftX(),
+        -m_driverController.getRightX(),
+        m_driverController.getRightY()
+      ), swerveBase)
+    );
 
   }
  
@@ -110,20 +111,26 @@ public class RobotContainer {
 
     // m_driverController.onRightTrigger(.5).whileTrue(new shootCoral(outake, ShootDirection.CENTER));
     // m_driverController.onRightBumper()             .whileTrue(new shootCoral(outake, ShootDirection.RIGHT ));
+
+
+
+    /*
     m_driverController.onStart().onTrue(new Command(){
       @Override
       public void initialize() {
         // swerveBase.resetGyro();
         System.out.println("Reset Gyro");
       }
-    });
+    });*/
 
-    m_driverController.onRightTrigger(.5).whileTrue(new shootCoral(outake, ShootDirection.CENTER));
-    m_driverController.onRightBumper().whileTrue(new moveElevator(elevator, 0));
+    //m_driverController.onRightTrigger(.5).whileTrue(new shootCoral(outake, ShootDirection.CENTER));
+    /*
+       m_driverController.onRightBumper().whileTrue(new moveElevator(elevator, 0));
     m_driverController.onLeftBumper().whileTrue(new moveElevator(elevator, 1));
     m_driverController.onDPadLeft().whileTrue(new shootCoral(outake, ShootDirection.LEFT));
     m_driverController.onDPadRight().whileTrue(new shootCoral(outake, ShootDirection.RIGHT));
     m_driverController.onDPadDown().whileTrue(new topLevelScore(elevator, outake, 0, 2));
+    */
   }
 
   /**
