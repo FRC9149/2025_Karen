@@ -20,8 +20,8 @@
         "y": 7.31075
       },
       "prevControl": {
-        "x": 1.4199999650949928,
-        "y": 7.485275034032382
+        "x": 1.41999996509499,
+        "y": 7.485275034032385
       },
       "nextControl": {
         "x": 1.9890000000000003,
@@ -52,7 +52,26 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "pause to get coral",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 1.0
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.0,
     "maxAcceleration": 2.5,
