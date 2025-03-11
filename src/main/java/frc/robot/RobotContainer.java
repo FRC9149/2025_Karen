@@ -114,14 +114,13 @@ public class RobotContainer {
 
 
 
-    /*
     m_driverController.onStart().onTrue(new Command(){
       @Override
       public void initialize() {
         // swerveBase.resetGyro();
         System.out.println("Reset Gyro");
       }
-    });*/
+    });
 
     //m_driverController.onRightTrigger(.5).whileTrue(new shootCoral(outake, ShootDirection.CENTER));
     /*

@@ -9,6 +9,24 @@
           "data": {
             "pathName": "Start"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Coral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Get More Coral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Get More Coral"
+          }
         }
       ]
     }
