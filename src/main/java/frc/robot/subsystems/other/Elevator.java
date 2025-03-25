@@ -24,25 +24,25 @@ public class Elevator extends SubsystemBase {
   private RelativeEncoder e1, e2;
   private PIDController pid = new PIDController(1, 0, 0);
   private SparkMaxConfig firstConfig = new SparkMaxConfig(), secondConfig = new SparkMaxConfig();
-  private double encoderTolerance, elevatorHeightMult;
+  private double encoderTolerance;
 
 
-  public Elevator(boolean inverted, double encoderTolerance, double elevatorHeightMult) {
+  public Elevator(boolean inverted, double encoderTolerance) {
     initMotors(inverted, inverted);
     initHash();
 
     this.encoderTolerance = encoderTolerance;
-    this.elevatorHeightMult = elevatorHeightMult;
   }
   private void initHash() {
-    heights.put(0, 7.31415);
-    heights.put(1, 25.6);
+    heights.put(-1, 0.1);
+    heights.put(0, 15.2867);
+    heights.put(1, 25.6); //was 25.6
     heights.put(2, 43.0);
-    heights.put(3, 66.75);
-    heights.put(4, 68.0);
+    heights.put(3, 68.6);
+    heights.put(4, 72.0);
   }
   /**
-   * Initializes the two SparkMax motors used for the elevator, as well as their
+   * Initializes the tw]\[o SparkMax motors used for the elevator, as well as their
    * corresponding encoders. Also sets up the configuration for the motors.
    *
    * @param inverted1 whether the first motor is inverted
@@ -78,22 +78,15 @@ public class Elevator extends SubsystemBase {
   public void setEncoderTolerance(double tolerance) {
     this.encoderTolerance = tolerance;
   }
-  public void setBrake(IdleMode mode) {
-    firstConfig.idleMode(mode);
-    secondConfig.idleMode(mode);
-
-    m1.configure(firstConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-    m2.configure(secondConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-  }
 
 
   public void setSpeed(double speed) {
     m1.set(speed);
     m2.set(speed);
   }
-  public void elevatorStop() {
-    m1.set(0);
-    m2.set(0);
+  public void elevatorStop(boolean brake) {
+    m1.set(brake ? .035 : 0);
+    m2.set(brake ? .035 : 0); 
   }
   public double getAverageEncoder() {
     return (Math.abs(e1.getPosition()) + Math.abs(e2.getPosition())) / 2;
@@ -113,28 +106,22 @@ public class Elevator extends SubsystemBase {
    * @param level the level to move to 0-3
    */
   public void moveToLevel(int level) {
-    // moveToHeight(heights.get(level));
-    if (!(level != 0 && getAverageEncoder() <= .7) &&
-    !(level == 0 && getAverageEncoder() >= 72)) {
-      setSpeed(level == 0 ? .3 : -.3);
-    } else {
-      setSpeed(0.035);
-    }
+    moveToHeight(heights.get(level), true);
   }
   /** Moves the elevator to the specified height
    * @param height height in encoder units from the base of the elevator
    */
-  public void moveToHeight(double height) {
-    setSpeed(pid.calculate(getAverageEncoder(), height));
+  public void moveToHeight(double height, boolean brake) {
+    double displacement = height - getAverageEncoder();
+    double brakeSpeed = brake ? .035 : 0;
+    setSpeed(
+      //if the displacement is outside target        go up or down              else stop
+      (Math.abs(displacement) > encoderTolerance) ? (displacement < 0 ? -.2 : .3) : brakeSpeed
+    );
   }
 
   @Override
   public void periodic() {
-    elevatorHeightMult = Math.abs( (getHeight() / getMaxHeight()) - 1); 
-        // (height / maxheight) limit's the values between 0 and 1
-        // (x-1) inverts the values so that 1 is now 0 and 0 is now -1
-        // Abs just makes sure that the values aren't negative such as inverting 0 into |-1|
-
     SmartDashboard.putNumber("elevator Encoders", getAverageEncoder());
     SmartDashboard.putNumber("encoder one", e1.getPosition());
     SmartDashboard.putNumber("encoder two", e2.getPosition());

@@ -5,6 +5,10 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.other.Elevator;
 
+/**
+ * <p>Moves the elevator to one of the specified levels.</p><br>
+ * <p>-1 for all the way down </p>
+ */
 public class moveElevator extends Command {
     private int height = 0;
     private final Elevator subsystem;
@@ -15,12 +19,6 @@ public class moveElevator extends Command {
         height = level;
         this.subsystem = subsystem;
         addRequirements(subsystem);
-    }
-
-    // runs once when the command is called. like pressing a button
-    @Override
-    public void initialize() {
-       if (height == 0) subsystem.setBrake(IdleMode.kBrake);
     }
 
     // called over and over again
@@ -34,15 +32,13 @@ public class moveElevator extends Command {
     // interrupted is true when another command uses the same subsystem
     @Override
     public void end(boolean interrupted) {
-        // subsystem.elevatorStop();
-        subsystem.setSpeed(0.035);
-        subsystem.setBrake(IdleMode.kBrake);
+        subsystem.elevatorStop(height != -1); // if height isn't at the bottom. use braking
     }
 
     // returns true when the command should end
     @Override
     public boolean isFinished() {
-        return false;
-        // return subsystem.atLevel(height);
+        // return false;
+        return subsystem.atLevel(height);
     }
 }

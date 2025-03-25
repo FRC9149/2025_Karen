@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.15775,
-        "y": 5.155999999999999
+        "x": 5.035,
+        "y": 5.218
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.41125,
-        "y": 6.131
+        "x": 4.698709893017134,
+        "y": 6.149019279017903
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.599,
-        "y": 7.31075
+        "x": 1.091,
+        "y": 6.944
       },
       "prevControl": {
-        "x": 1.41999996509499,
-        "y": 7.485275034032385
-      },
-      "nextControl": {
-        "x": 1.9890000000000003,
-        "y": 6.930499999999999
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 5.15775,
-        "y": 5.155999999999999
-      },
-      "prevControl": {
-        "x": 5.2065,
-        "y": 6.481999999999999
+        "x": 1.2271414050579603,
+        "y": 7.243510463638325
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,49 +30,30 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": -53.61564818416413
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -145.6586461550326
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "pause to get coral",
-      "waypointRelativePos": 1.0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 1.0
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.0,
     "maxAcceleration": 2.5,
-    "maxAngularVelocity": 540.0,
+    "maxAngularVelocity": 535.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -121.79891282429446
+    "rotation": -143.494
   },
   "reversed": false,
-  "folder": null,
+  "folder": "first",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -123.40782458970901
+    "rotation": 145.77424177536466
   },
   "useDefaultConstraints": true
 }
